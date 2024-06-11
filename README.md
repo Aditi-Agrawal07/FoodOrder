@@ -47,17 +47,28 @@ This project is a backend system for an online food delivery service built with 
    npm start
    ```
 
-## API Endpoints
+## Admin
+- **GET /admin/vendors**: Get all the vendors.
+- **GET /admin/vendor/:id :  Get a vendor By Id
+- **GET /admin/transactions:  Get All the transactions
+- **GET /admin/transactions/:id : Get a single transaction by its id
+- **PUT /admin//delivery/verify:  Verify Delivery User
+- **GET /admin//delivery/users: Get Delivery User
 
-### Authentication
+### Customer
 
-- **POST /api/register**: Register a new user.
-- **POST /api/login**: Log in an existing user.
-
-### Restaurants
-
-- **GET /api/restaurants**: Get a list of all restaurants.
-- **GET /api/restaurants/:id**: Get details of a specific restaurant.
+- **GET /customer/signup**: Signup or Create Customer.
+- **GET /customer/login: Login Customer.
+- **PATCH /customer/verify: Verify Customer.
+- **GET /customer/otp: Requesting for OTP.
+- **GET /customer/profile: Get the profile of a customer.
+- **PATCH /customer/profile: Edit the customer profile.
+- **POST /customer/create-order: Create the order or placing the order.
+- **GET /customer/orders: Get the all the order of that customer.
+- **GEt /customer/order/:id : Get a order of that customer.
+- **POST /customer/cart: Get the cart products of that customer.
+- **GET /customer/offer/verify/:id : Apply the offer
+- **POSt /customer/create-payment: Create a payment
 
 ### Orders
 
