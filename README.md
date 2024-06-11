@@ -35,9 +35,11 @@ This project is a backend system for an online food delivery service built with 
 3. **Set up environment variables**:
    Create a `.env` file in the root directory and add the following variables:
    ```env
-   PORT=3000
-   MONGODB_URI=your_mongodb_connection_string
-   JWT_SECRET=your_secret_key
+    MONGO_URI=mongodb+srv://07aditiagrawal:knfto4Ts2fx2ZxJf@cluster1.b5gzxgq.mongodb.net/Food_Order?retryWrites=true&w=majority
+    APP_SECRET=OUR_API_SECRET
+    PORT=8080
+    ACCOUNTID=ACd29db596f6e550cb53e9ed09ffb714d0
+    AUTHTOKEN=6195ecb8002c1d557d0fe6b709c5d054
    ```
 
 4. **Run the server**:
