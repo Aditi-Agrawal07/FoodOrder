@@ -10,7 +10,6 @@ This project is a backend system for an online food delivery service built with 
 - **Restaurant Management**: View and choose from a list of available restaurants.
 - **Food Ordering**: Browse restaurant menus and place orders.
 - **Shopping Cart**: Add and remove items from the shopping cart.
-- **Payment Processing**: Handle secure payments for orders.
 
 ## Technologies Used
 
@@ -65,25 +64,40 @@ This project is a backend system for an online food delivery service built with 
 - **PATCH /customer/profile: Edit the customer profile.
 - **POST /customer/create-order: Create the order or placing the order.
 - **GET /customer/orders: Get the all the order of that customer.
-- **GEt /customer/order/:id : Get a order of that customer.
+- **GET /customer/order/:id : Get a order of that customer.
 - **POST /customer/cart: Get the cart products of that customer.
 - **GET /customer/offer/verify/:id : Apply the offer
 - **POSt /customer/create-payment: Create a payment
 
-### Orders
+### Vendors
 
-- **POST /api/orders**: Place a new order.
-- **GET /api/orders/:id**: Get details of a specific order.
+- **POST /vendor/login**: Login the vendor.
+- **GET /vendor/profile: Get the profile of vendor.
+- **PATCH /vendor/profile: Update the vendor profile.
+- **PATCH /vendor/service: Update the vendor service.
+- **PATCH /vendor/coverImage: Update the vendor cover Image.
+- **POST /vendor/food: Add the food By the vendor.
+- **GET /vendor/foods: Get the food added by that vendor.
+- **POST /vendor/offer: Add the offer By the vendor.
+- **GET /vendor/offers: Get the offer that are added by that vendor.
+- **PUT /vendor/offer/:id : Update that offer 
 
-### Cart
+### Delivery Agent
 
-- **GET /api/cart**: Get the current user's cart.
-- **POST /api/cart**: Add an item to the cart.
-- **DELETE /api/cart/:itemId**: Remove an item from the cart.
+- **POST /delivery/signup: Signup the delivery user.
+- **POSt /delivery/login: Login the delivery user.
+- **PUT /delivery/change-status: Change the status of delivery user
+- **GET /delivery/profile: Get the profile of delivery user.
+- **PATCH /delivery/profile: Update the profile of delivery user.
 
-### Payment
+### Shopping 
 
-- **POST /api/payment**: Process payment for an order.
+- **GET /:pincode: Get the Available foods on that pincode.
+- **GET /top-restruant/:pincode : Get the top restaurant of that pincode.
+- **GET /foods-in-30-minutes/:pincode : Get the food that are ready in 30 minutes in that pincode.
+- **GET /search/:pincode : Search the food of that pincode.
+- **GET /offers/:pincode : Get the offers available on that pincode.
+- **GET /restaruant/:id : Get the restaurant By id
 
 ## Contributing
 
