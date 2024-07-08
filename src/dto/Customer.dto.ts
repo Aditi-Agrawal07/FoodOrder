@@ -3,12 +3,11 @@ import {IsEmail, IsEmpty, Length, isEmail} from 'class-validator'
 
 export class CreateCustomerInputs{
 
+
+  name: string;
   @IsEmail()
   email: string;
 
-
- 
-  name: string;
 
 
   @Length(6,12)

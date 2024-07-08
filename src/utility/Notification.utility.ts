@@ -1,4 +1,4 @@
-
+import { AUTHTOKEN, ACCOUNTID} from './../config'
 // Email
 
 
@@ -19,8 +19,8 @@ export const GenerateOtp = ()=>{
 
 export const onRequestOtp = async(otp:number, toPhoneNumber: string)=>{
 
-    const accountsId = process.env.ACCOUNTID
-   const authToken = process.env.AUTHTOKEN
+    const accountsId = ACCOUNTID
+   const authToken = AUTHTOKEN
 
    const client = require('twilio')(accountsId, authToken)
 

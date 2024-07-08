@@ -1,6 +1,7 @@
 import express from 'express'
 import App from './Services/ExpressApp'
 import dbConnection from './Services/Database'
+import {PORT} from './config/index'
 require('dotenv').config()
 
 const StartServer = async()=>{
