@@ -5,8 +5,10 @@ import { ValidationError, validate } from 'class-validator'
 import { CreateCustomerInputs, UserLoginInputs, OrderInputs, CartItem, EditCustomerProfileInputs } from '../dto/Customer.dto'
 import { GenerateOtp, GeneratePassword, GenerateSalt, GenerateSignature, ValidatePassword, onRequestOtp } from '../utility'
 import { Customer, DeliveryUser, Food, Offer, Order, Transaction, Vendor } from '../Models'
+import { sendCodeMail } from '../utility/nodeMailer'
 
 // CONTROLLER: Customer Sign Up
+const currentCode = {};
 export const CustomerSignup = async (req: Request, res: Response, next: NextFunction) => {
 
     const customerInputs = plainToClass(CreateCustomerInputs, req.body)
@@ -20,7 +22,7 @@ export const CustomerSignup = async (req: Request, res: Response, next: NextFunc
 
     }
 
-    const { email, phone, password } = customerInputs
+    const { name, email, password } = customerInputs
 
     const salt = await GenerateSalt()
     const userPassword = await GeneratePassword(password, salt)
@@ -31,6 +33,7 @@ export const CustomerSignup = async (req: Request, res: Response, next: NextFunc
 
 
     const existingCustomer = await Customer.findOne({ email: email })
+    console.log(existingCustomer)
 
     if (existingCustomer) {
         return res.status(409).send({ message: "A user that email will exist" })
@@ -40,10 +43,9 @@ export const CustomerSignup = async (req: Request, res: Response, next: NextFunc
         email: email,
         password: userPassword,
         salt: salt,
-        phone: phone,
         otp: otp,
         otp_expiry: expiry,
-        firstName: '',
+        firstName: name,
         lastName: '',
         address: '',
         verified: false,
@@ -56,7 +58,7 @@ export const CustomerSignup = async (req: Request, res: Response, next: NextFunc
 
 
         // Send otp functionality do later
-        await onRequestOtp(otp, phone)
+        // await onRequestOtp(otp, phone)
 
         const signature = GenerateSignature({
             email: result.email,
@@ -86,11 +88,17 @@ export const CustomerLogin = async (req: Request, res: Response, next: NextFunct
     const { email, password } = LoginInputs
 
     const customer = await Customer.findOne({ email: email })
+     
+
 
     if (customer) {
-
+         console.log("Customer",customer)
+        console.log("Password",password)
+        console.log("Customer Password",customer.password)
+        console.log("Customer Salt",customer.salt)
         const validation = await ValidatePassword(password, customer.password, customer.salt)
 
+        
         if (validation) {
 
             const signature = GenerateSignature({
@@ -100,15 +108,16 @@ export const CustomerLogin = async (req: Request, res: Response, next: NextFunct
 
             })
 
-            return res.status(201).json({
+            return res.status(200).json({
                 signature: signature,
                 verified: customer.verified,
                 email: customer.email
             })
         }
+        return res.status(400).json({ message: "Incorrect Password"})
     }
-    return res.status(404).json({ message: "Login Error" })
-
+   
+return res.status(404).json({message: "User not exist"})
 }
 export const CustomerVerify = async (req: Request, res: Response, next: NextFunction) => {
 
@@ -139,6 +148,80 @@ export const CustomerVerify = async (req: Request, res: Response, next: NextFunc
 
 }
 
+export const sendCode = async(req: Request, res: Response, next: NextFunction)=>{
+
+
+    const code = Math.floor(1000 + Math.random() * 9000).toString(); 
+    const {email} = req.body;
+  
+    currentCode[email] = code
+
+    
+    const customer = await Customer.findOne({email: email})
+    
+    if(!customer){
+        return res.status(404).json({
+            hasError: true,
+            message: "Email not found"
+        })
+        
+    }
+   
+
+    sendCodeMail(email, code);
+
+    return res.status(200).json({
+        hasError: false,
+        message: "Code sent successfully"
+    })
+    // 4-digit code
+
+
+
+}
+
+export const verifyCode = async(req: Request, res: Response, next: NextFunction)=>{
+    const {code, email} = req.body
+  
+    const customer = await Customer.findOne({email: email})
+
+     console.log(customer)
+
+    if(!customer){
+        return res.status(400).json({
+            hasError: true,
+            message: "Something went wrong"
+        })
+    }
+
+    console.log(currentCode[email])
+    console.log(code)
+
+    if(currentCode[email] == code){
+    
+
+        delete currentCode[email]
+
+        const signature = GenerateSignature({
+            _id: customer._id,
+            email: customer.email,
+            verified: true 
+
+        })
+
+        return res.status(200).json({
+            hasError: false,
+            signature
+        })
+
+    }
+
+   
+
+
+    
+}
+
 export const RequestOtp = async (req: Request, res: Response, next: NextFunction) => {
 
     const customer = req.user
@@ -153,7 +236,7 @@ export const RequestOtp = async (req: Request, res: Response, next: NextFunction
                 profile.otp_expiry = expiry
 
             await profile.save()
-            await onRequestOtp(otp, profile.phone)
+            // await onRequestOtp(otp, profile.phone)
 
             return res.status(200).json({ message: "OTP sent to your registered phone number" })
         }

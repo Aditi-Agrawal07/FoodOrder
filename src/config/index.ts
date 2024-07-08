@@ -1,5 +1,0 @@
-export const MONGO_URI= "mongodb+srv://07aditiagrawal:knfto4Ts2fx2ZxJf@cluster1.b5gzxgq.mongodb.net/Food_Order?retryWrites=true&w=majority"
-export const APP_SECRET = "OUR_API_SECRET"
-export const PORT ="8080"
-export const ACCOUNTID = "ACd29db596f6e550cb53e9ed09ffb714d0"
-export const AUTHTOKEN = "6195ecb8002c1d557d0fe6b709c5d054"

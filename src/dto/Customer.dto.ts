@@ -7,8 +7,8 @@ export class CreateCustomerInputs{
   email: string;
 
 
-  @Length(10, 10)
-  phone: string;
+ 
+  name: string;
 
 
   @Length(6,12)

@@ -1,5 +1,5 @@
 import express, { Request, Response, NextFunction } from "express";
-import { CustomerLogin, CustomerSignup, CustomerVerify, RequestOtp, GetCustomerProfile,EditCustomerProfile, CreateOrder, getOrders, getOrderById, VerifyOffer, CreatePayment, AddToCart } from "../controllers/index";
+import { CustomerLogin, CustomerSignup, CustomerVerify, RequestOtp, GetCustomerProfile,EditCustomerProfile, CreateOrder, getOrders, getOrderById, VerifyOffer, CreatePayment, AddToCart, sendCode, verifyCode } from "../controllers/index";
 import { Authenticate } from "../Middlewares";
 
 const router  = express.Router()
@@ -9,6 +9,12 @@ router.post("/signup", CustomerSignup)
 
 // Route: Login
 router.post("/login", CustomerLogin)
+
+// Route: Send Code
+router.post("/sendCode", sendCode);
+
+// Route: Verify Code
+router.post("/verifyCode", verifyCode)
 
 
 //  authentication
